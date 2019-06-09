@@ -10,6 +10,9 @@ const state = {
 
 
 const connect = (cb) => {
+    /*
+    Check whether is there any db connection
+     */
     if (state.db) {
         cb.db();
     }
