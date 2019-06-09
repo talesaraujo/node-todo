@@ -11,7 +11,7 @@ const state = {
 
 const connect = (cb) => {
     /*
-    Check whether is there any db connection
+    Check whether there's already a db connection
      */
     if (state.db) {
         cb.db();
