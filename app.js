@@ -26,16 +26,31 @@ app.get('/getTodos', (req, res) => {
 });
 
 /*
+    Server side create portion
+ */
+app.post('/', (req, res) => {
+    const userInput = req.body;
+    db.getDB().collection(collection).insertOne(userInput, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.json({result: result, document: result.ops[0]});
+        }
+    });   
+});
+
+/*
     Server side update portion
  */
 app.put('/:id', (req, res) => {
     const todoID = req.params.id;
     const userInput = req.body;
 
-    db.getDB().collection(collection).findOneAndUpdate({_id: db.getPrimaryKey(todoID)}, 
-                                                     {$set: {todo: userInput.todo}},
-                                                     {returnOriginal: false}, 
-                                                     (err, result) => {
+    db.getDB().collection(collection).findOneAndUpdate({_id: db.getPrimaryKey(todoID)},
+                                                       {$set: { todo: userInput.todo}},
+                                                       {returnOriginal: false},
+                                                       (err, result) => {
         if (err) {
             console.log(err);
         }
@@ -43,6 +58,7 @@ app.put('/:id', (req, res) => {
             res.json(result);
         }
     });
+
 });
 
 
