@@ -29,4 +29,12 @@ $(document).ready(() => {
         </li>`;
     }
 
+    const displayTodos = (data) => {
+        data.forEach((todo) => {
+            let ids = buildIDS(todo);
+            display.append(buildTemplate(todo, ids));
+            editTodo(todo, ids.todoID, ids.editID);
+            deleteTodo(todo, ids.listItemID, ids.deleteID);
+        });
+    }
 });
