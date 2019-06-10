@@ -33,9 +33,9 @@ app.put('/:id', (req, res) => {
     const userInput = req.body;
 
     db.getDB().collection(collection).findOneAndUpdate({_id: db.getPrimaryKey(todoID)}, 
-                                                     {$set: {todo: userInput.todo}},
-                                                     {returnOriginal: false}, 
-                                                     (err, result) => {
+                                                       {$set: {todo: userInput.todo}},
+                                                       {returnOriginal: false}, 
+                                                       (err, result) => {
         if (err) {
             console.log(err);
         }
