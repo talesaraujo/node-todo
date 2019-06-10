@@ -61,7 +61,21 @@ app.put('/:id', (req, res) => {
 
 });
 
+/*
+    Server side delete portion
+*/
+app.delete('/:id', (req, res) => {
+    const todoID = req.params.id;
 
+    db.getDB().collection(collection).findOneAndDelete({__id: db.getPrimaryKey(todoID)}, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.json(result);
+        }
+    });
+});
 
 db.connect((err) => {
     if (err) {
