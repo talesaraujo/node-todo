@@ -37,7 +37,7 @@ $(document).ready(() => {
     const buildIDS = (todo) => {
         return {
             editID: "edit_" + todo._id,
-            deleteID: "delete_" + todo.id,
+            deleteID: "delete_" + todo._id,
             listItemID: "listItem_" + todo._id,
             todoID: "todo_" + todo._id
         }
