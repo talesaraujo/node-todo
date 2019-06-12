@@ -3,6 +3,17 @@ $(document).ready(() => {
     const form = $("#form");
     const todoUserInput = $("#todoUserInput");
 
+    const getTodos = () => {
+        fetch('/getTodos', {method: "get"}).then((response) => {
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            displayTodos(data);
+        });
+    }
+
+    getTodos();
+
     const resetTodosInput = () => {
         todoUserInput.val('');
     }
@@ -33,8 +44,8 @@ $(document).ready(() => {
         data.forEach((todo) => {
             let ids = buildIDS(todo);
             display.append(buildTemplate(todo, ids));
-            editTodo(todo, ids.todoID, ids.editID);
-            deleteTodo(todo, ids.listItemID, ids.deleteID);
+            //editTodo(todo, ids.todoID, ids.editID);
+            //deleteTodo(todo, ids.listItemID, ids.deleteID);
         });
     }
 });
