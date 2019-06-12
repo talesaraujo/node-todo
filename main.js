@@ -18,6 +18,22 @@ $(document).ready(() => {
         todoUserInput.val('');
     }
 
+    const deleteTodo = (todo, listItemID, deleteID) => {
+        let deleteBtn = $(`#${deleteID}`);
+
+        deleteBtn.click(() => {
+            fetch(`/${todo._id}`, {
+                method: "delete"
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                if(data.ok == 1) {
+                    $(`#${listItemID}`).remove();
+                }
+            });
+        });
+    }
+
     const buildIDS = (todo) => {
         return {
             editID: "edit_" + todo._id,
@@ -45,7 +61,7 @@ $(document).ready(() => {
             let ids = buildIDS(todo);
             display.append(buildTemplate(todo, ids));
             //editTodo(todo, ids.todoID, ids.editID);
-            //deleteTodo(todo, ids.listItemID, ids.deleteID);
+            deleteTodo(todo, ids.listItemID, ids.deleteID);
         });
     }
 
