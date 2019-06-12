@@ -44,7 +44,7 @@ $(document).ready(() => {
     }
 
     const buildTemplate = (todo, ids) => {
-        return `<li class="list-group-item" id"${ids.listItemID}">
+        return `<li class="list-group-item" id="${ids.listItemID}">
             <div class="row">
                 <div class="col-md-4" id="${ids.todoID}">${todo.todo}</div>
                 <div class="col-md-4"></div>
