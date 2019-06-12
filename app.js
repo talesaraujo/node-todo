@@ -8,6 +8,8 @@ const path = require("path");
 const db = require("./db");
 const collection = "todo";
 
+app.use(express.static('.'));
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
