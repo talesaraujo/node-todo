@@ -2,20 +2,26 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
-app.use(bodyParser.json());
-
 const path = require("path");
 const db = require("./db");
 const collection = "todo";
 
 app.use(express.static('.'));
 
+// Parses json data set by the user
+app.use(bodyParser.json());
 
+// Serve static html file to user
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+/*
+    Server side read portion
+ */
 app.get('/getTodos', (req, res) => {
+    // Get all documents from todo collection and
+    // send it back to the user as a json file
     db.getDB().collection(collection).find({}).toArray((err, documents) => {
         if (err) {
             console.log(err);
@@ -31,7 +37,9 @@ app.get('/getTodos', (req, res) => {
     Server side create portion
  */
 app.post('/', (req, res) => {
+    // Document to be inserted
     const userInput = req.body;
+
     db.getDB().collection(collection).insertOne(userInput, (err, result) => {
         if (err) {
             console.log(err);
@@ -46,22 +54,27 @@ app.post('/', (req, res) => {
     Server side update portion
  */
 app.put('/:id', (req, res) => {
+    // Primary key of document that is meant to be updated
     const todoID = req.params.id;
+    // Document used to update
     const userInput = req.body;
 
-    db.getDB().collection(collection).findOneAndUpdate({_id: db.getPrimaryKey(todoID)},
-                                                       {$set: { todo: userInput.todo}},
-                                                       {returnOriginal: false},
-                                                       (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            res.json(result);
-        }
+    // Find documento by ID and update
+    db.getDB().collection(collection).findOneAndUpdate(
+        {_id: db.getPrimaryKey(todoID)},               
+        {$set: { todo: userInput.todo}},                       
+        {returnOriginal: false},                                               
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                res.json(result);
+            }
     });
-
+    
 });
+
 
 /*
     Server side delete portion

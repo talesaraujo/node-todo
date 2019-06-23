@@ -18,6 +18,15 @@ $(document).ready(() => {
         todoUserInput.val('');
     }
 
+    const editTodo = (todo, todoID, editID) => {
+        let editBtn = $(`${editID}`);
+
+        editBtn.click(() => {
+            fetch(`/${todo._id}`);
+        })
+    }
+
+
     const deleteTodo = (todo, listItemID, deleteID) => {
         let deleteBtn = $(`#${deleteID}`);
 
