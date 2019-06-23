@@ -1,10 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const app = express();
 
 const path = require("path");
+const Joi = require("joi");
+
 const db = require("./db");
 const collection = "todo";
+
+const app = express();
+
+const schema = Joi.object().keys({
+    todo: Joi.string().required()
+});
+
 
 app.use(express.static('.'));
 
@@ -36,18 +44,32 @@ app.get('/getTodos', (req, res) => {
 /*
     Server side create portion
  */
-app.post('/', (req, res) => {
+app.post('/', (req, res, next) => {
     // Document to be inserted
     const userInput = req.body;
 
-    db.getDB().collection(collection).insertOne(userInput, (err, result) => {
+    Joi.validate(userInput, schema, (err, result) => {
         if (err) {
-            console.log(err);
+            const error = new Error("Invalid Input");
+            error.status = 400;
+            next(error);
         }
         else {
-            res.json({result: result, document: result.ops[0]});
+            db.getDB().collection(collection).insertOne(userInput, (err, result) => {
+                if (err) {
+                    const error = new Error("Failed to insert to-do document");
+                    error.status = 400;
+                    next(error);
+                }
+                else {
+                    res.json({result: result, document: result.ops[0], 
+                              msg: "Successfully inserted to-do", 
+                              error: null});
+                }
+            }); 
+
         }
-    });   
+    });
 });
 
 /*
@@ -72,7 +94,7 @@ app.put('/:id', (req, res) => {
                 res.json(result);
             }
     });
-    
+
 });
 
 
@@ -88,6 +110,14 @@ app.delete('/:id', (req, res) => {
         }
         else {
             res.json(result);
+        }
+    });
+});
+
+app.use((err, req, res, next) => {
+    res.status(err.status).json({
+        error: {
+            message: err.message
         }
     });
 });
