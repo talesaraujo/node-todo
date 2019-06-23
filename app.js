@@ -9,6 +9,7 @@ const collection = "todo";
 
 const app = express();
 
+// Schema used for data validation for the to-do document
 const schema = Joi.object().keys({
     todo: Joi.string().required()
 });
@@ -50,20 +51,20 @@ app.post('/', (req, res, next) => {
 
     Joi.validate(userInput, schema, (err, result) => {
         if (err) {
-            const error = new Error("Invalid Input");
+            const error = new Error("Invalid Input!");
             error.status = 400;
             next(error);
         }
         else {
             db.getDB().collection(collection).insertOne(userInput, (err, result) => {
                 if (err) {
-                    const error = new Error("Failed to insert to-do document");
+                    const error = new Error("Failed to insert document.");
                     error.status = 400;
                     next(error);
                 }
                 else {
                     res.json({result: result, document: result.ops[0], 
-                              msg: "Successfully inserted to-do", 
+                              msg: "Successfully inserted.", 
                               error: null});
                 }
             }); 

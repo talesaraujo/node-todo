@@ -38,20 +38,20 @@ $(document).ready(() => {
         todoUserInput.val('');
     }
 
-    const editTodo = (todo, todoID, editID) => {
-        let editBtn = $(`${editID}`);
+    const editTodo = (todo, todoID, editID)=>{
+        let editBtn = $(`#${editID}`);
 
-        editBtn.click(() => {
+        editBtn.click(()=>{
             fetch(`/${todo._id}`, {
                 method: "put",
                 headers: {
-                    "Content-Type": "application/json; charset=utf8"
+                    "Content-Type" : "application/json; charset=utf-8" 
                 },
-                body: JSON.stringify({todo: todoUserInput.val()})
+                body : JSON.stringify({todo: todoUserInput.val()})
             }).then((response) => {
-                return response.json;
+                return response.json();
             }).then((data) => {
-                if (data.ok == 1) {
+                if(data.ok == 1) {
                     let todoIndex = $(`#${todoID}`);
                     todoIndex.html(data.value.todo);
                     resetTodosInput();
