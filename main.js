@@ -22,8 +22,22 @@ $(document).ready(() => {
         let editBtn = $(`${editID}`);
 
         editBtn.click(() => {
-            fetch(`/${todo._id}`);
-        })
+            fetch(`/${todo._id}`, {
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json; charset=utf8"
+                },
+                body: JSON.stringify({todo: todoUserInput.val()})
+            }).then((response) => {
+                return response.json;
+            }).then((data) => {
+                if (data.ok == 1) {
+                    let todoIndex = $(`#${todoID}`);
+                    todoIndex.html(data.value.todo);
+                    resetTodosInput();
+                }
+            });
+        });
     }
 
 
@@ -69,7 +83,7 @@ $(document).ready(() => {
         data.forEach((todo) => {
             let ids = buildIDS(todo);
             display.append(buildTemplate(todo, ids));
-            //editTodo(todo, ids.todoID, ids.editID);
+            editTodo(todo, ids.todoID, ids.editID);
             deleteTodo(todo, ids.listItemID, ids.deleteID);
         });
     }
@@ -89,8 +103,8 @@ $(document).ready(() => {
             if (data.result.ok == 1 && data.result.n == 1) {
                 let ids = buildIDS(data.document);
                 display.append(buildTemplate(data.document, ids));
-                //editTodo(data.document, ids.todoID, ids.editID);
-                //deleteTodo(data.document, ids.listItemID, ids.deleteID);
+                editTodo(data.document, ids.todoID, ids.editID);
+                deleteTodo(data.document, ids.listItemID, ids.deleteID);
             }
             resetTodosInput();
         });
