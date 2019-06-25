@@ -136,7 +136,7 @@ db.connect((err) => {
     }
     else {
         app.listen(PORT, HOST, () => {
-            console.log('Connected to the database, app listening on port 3000')
+            console.log('Connected to the database, app listening on port ' + PORT)
         });
     }
 });
