@@ -1,0 +1,19 @@
+version: "2"
+services:
+  app:
+    container_name: todoapp
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/app/
+    links:
+      - mongo
+
+  mongo:
+    container_name: todo_mongodb
+    image: mongo:4.0.4
+    volumes:
+      - ./data:/data/db/
+    ports:
+      - "27017-27019:27017-27019"
