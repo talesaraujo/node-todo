@@ -4,7 +4,7 @@ const ObjectID = require("mongodb").ObjectID;
 // Database name
 const dbname = "todo_mongodb";
 
-const MONGOHOST = "ec2-54-232-240-159.sa-east-1.compute.amazonaws.com@localhost"
+const MONGOHOST = "52.67.158.153"
 
 // Where mongoDB is located
 const url = "mongodb://" + MONGOHOST + ":27017";
