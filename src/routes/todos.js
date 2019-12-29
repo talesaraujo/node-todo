@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 // List todos
-//router.get('/:user_id/todos', );
+router.get('/:user_id/todos', TodoController.list);
 
 // Create todo
 router.post('/:user_id/todos', TodoController.create);

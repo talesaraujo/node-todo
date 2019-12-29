@@ -2,11 +2,9 @@ const User = require('../models/User');
 
 
 const list = async (req, res) => {
-    const users = await User.findAll();
-
-    users.forEach((user) => {
-        user.password = undefined;
-    });
+    const users = await User.findAll(
+        { attributes: ['username', 'name'] }
+    );
 
     return res.json(users);
 }
@@ -18,7 +16,7 @@ const create = async (req, res) => {
     try {
         const user = await User.create({ username, name, password });
 
-        return res.status(201).send({ "status": "User created" });
+        return res.status(201).send({ status: "User created" });
     }
     catch (err) {
         const { message } = err.errors[0];
