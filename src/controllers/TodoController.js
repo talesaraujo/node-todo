@@ -54,11 +54,52 @@ const list = async (req, res) => {
 }
 
 
-// Update
+const edit = async (req, res) => {
+    const { user_id, todo_id } = req.params;
+    const { desc, done } = req.body;
 
-// Delete
+    try {
+        const query = await Todo.update(
+            { desc, done },
+            { where: { user_id: user_id, id: todo_id } }
+        );
+
+        if (query[0] == 0) {
+            return res.status(404).send({ error: "Either user or todo was not found" });
+        }
+
+        return res.status(200).send({ status: "Todo updated" });
+    }
+    catch (err) {
+        const { message } = err.errors[0];
+        console.log(err);
+        
+        return res.status(500).send({ error: "Internal server error", description: message });
+    }
+}
+
+
+const remove = async (req, res) => {
+    const { user_id, todo_id } = req.params;
+
+    try {
+        const query = await Todo.destroy({ where: { user_id, id: todo_id } });
+
+        if (query == 0) {
+            return res.status(404).send({ error: "Either user or todo was not found" });
+        }
+
+        return res.status(200).send({ status: "Todo removed"});
+    }
+    catch (err) {
+        const { message } = err.errors[0];
+        console.log(err);
+
+        return res.status(500).send({ error: "Internal server error", description: message });
+    }
+}
 
 
 module.exports = {
-    create, list
+    create, list, edit, remove
 }

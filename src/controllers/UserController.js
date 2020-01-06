@@ -33,7 +33,7 @@ const edit = async (req, res) => {
     try {
        const query = await User.update(
            { name, password },
-           { where: { id: user_id }}
+           { where: { id: user_id } }
         );
 
         if (query[0] == 0) {

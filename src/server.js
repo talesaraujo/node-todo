@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var app = require('./app');
 
 var http = require('http');
@@ -15,5 +17,5 @@ server.on('error', (error) => {
 });
 
 server.on('listening', () => {
-    console.log("Server listening on port " + port);
+    console.log(`Server listening on port ${port}`);
 });
